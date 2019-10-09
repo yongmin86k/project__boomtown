@@ -33,8 +33,8 @@ module.exports = ({ app, pgResource }) => {
       try {
         // TODO:
         // If there is a token, verify that token to get user info and assign it to user variable
-        // return req, token, user, pgResources
-        return {pgResources}
+        // return req, token, user, pgResource
+        return {pgResource}
       } catch (e) {
         // throw error
       }
