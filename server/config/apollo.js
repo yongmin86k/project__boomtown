@@ -18,7 +18,9 @@ module.exports = ({ app, pgResource }) => {
    */
 
   // @TODO: Refactor to use 'makeExecutableSchema' to wire up your schema to your resolvers:
-  const schema = undefined;
+  const schema = makeExecutableSchema({
+    typeDefs, resolvers
+  });
   // -------------------------------
 
   const apolloServer = new ApolloServer({
@@ -32,6 +34,7 @@ module.exports = ({ app, pgResource }) => {
         // TODO:
         // If there is a token, verify that token to get user info and assign it to user variable
         // return req, token, user, pgResources
+        return {pgResources}
       } catch (e) {
         // throw error
       }
