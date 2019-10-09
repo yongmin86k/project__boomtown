@@ -25,11 +25,6 @@ module.exports = (app) => {
    *  Most server applications will not run unless specific values are part of their environment.
    *  Boomtown requires the following environment variables:
    *
-   *  PORT
-   *  PG_HOST
-   *  PG_USER
-   *  PG_PASSWORD
-   *  PG_DB
    *  JWT_SECRET
    *
    *  And the following non-security related information should also be set for use elsewhere:
@@ -40,10 +35,12 @@ module.exports = (app) => {
    *  Use the app.set and process.env to retrieve environment variables, and provide a fallback
    *  if any are not defined.
    *
-   *  Use Express' app.set() to store additional configuration information.
-   *
-   *  For example: app.set('PG_HOST', process.env.PG_HOST || 'localhost')
    */
+
+  app.set('PG_HOST', process.env.PG_HOST || 'localhost');
+  app.set('PG_USER', process.env.PG_USER || 'boomtown');
+  app.set('PG_PASSWORD', process.env.PG_PASSWORD || 'boomtown');
+  app.set('PG_DB', process.env.PG_DB || 'boomtown');
 
   app.use(cookieParser());
 
