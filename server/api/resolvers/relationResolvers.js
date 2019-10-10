@@ -3,18 +3,18 @@ const { ApolloError } = require("apollo-server");
 const relationResolvers = {
   User: {
 
-    items(parent, args, {pgResource}, info) {
+    items({id}, args, {pgResource}, info) {
       try {
-        const items = pgResource.getItemsForUser(parent.id);
+        const items = pgResource.getItemsForUser(id);
         return items;
       } catch (e) {
         throw new ApolloError(e);
       }
     },
 
-    borrowed(parent, args, {pgResource}, info) {
+    borrowed({id}, args, {pgResource}, info) {
       try {
-        const items = pgResource.getBorrowedItemsForUser(parent.id);
+        const items = pgResource.getBorrowedItemsForUser(id);
         return items;
       } catch (e) {
         throw new ApolloError(e);
@@ -24,26 +24,26 @@ const relationResolvers = {
   },
 
   Item: {
-    async itemowner(parent, args, {pgResource}, info) {
+    async itemowner({itemowner}, args, {pgResource}, info) {
       try {
-        const itemowner = pgResource.getUserById(parent.itemowner);
+        const itemowner = pgResource.getUserById(itemowner);
         return itemowner;
       } catch(e) {
         throw new ApolloError(e);
       }
     },
-    async tags(parent, args, {pgResource}, info) {
+    async tags({id}, args, {pgResource}, info) {
       try {
-        const tags = pgResource.getTagsForItem(parent.id);
+        const tags = pgResource.getTagsForItem(id);
         return tags;
       } catch(e) {
         throw new ApolloError(e);
       }
     },
-    async borrower(parent, args, {pgResource}, info) {
+    async borrower({borrower}, args, {pgResource}, info) {
       try {
         if (parent.borrower) {
-          const borrower = pgResource.getUserById(parent.borrower);
+          const borrower = pgResource.getUserById(borrower);
           return borrower;
         } else {
           return null;
