@@ -24,9 +24,9 @@ const relationResolvers = {
   },
 
   Item: {
-    async itemowner({itemowner}, args, {pgResource}, info) {
+    async itemowner({ownerID}, args, {pgResource}, info) {
       try {
-        const itemowner = pgResource.getUserById(itemowner);
+        const itemowner = pgResource.getUserById(ownerID);
         return itemowner;
       } catch(e) {
         throw new ApolloError(e);
@@ -40,10 +40,10 @@ const relationResolvers = {
         throw new ApolloError(e);
       }
     },
-    async borrower({borrower}, args, {pgResource}, info) {
+    async borrower({borrowerID}, args, {pgResource}, info) {
       try {
         if (parent.borrower) {
-          const borrower = pgResource.getUserById(borrower);
+          const borrower = pgResource.getUserById(borrowerID);
           return borrower;
         } else {
           return null;
