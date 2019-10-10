@@ -40,30 +40,23 @@ module.exports = postgres => {
       }
     },
     async getUserById(id) {
-      /**
-       *  @TODO: Handling Server Errors
-       *
-       *  Inside of our resource methods we get to determine when and how errors are returned
-       *  to our resolvers using try / catch / throw semantics.
-       *
-       *  Ideally, the errors that we'll throw from our resource should be able to be used by the client
-       *  to display user feedback. This means we'll be catching errors and throwing new ones.
-       *
-       *  Errors thrown from our resource will be captured and returned from our resolvers.
-       *
-       *  This will be the basic logic for this resource method:
-       *  1) Query for the user using the given id. If no user is found throw an error.
-       *  2) If there is an error with the query (500) throw an error.
-       *  3) If the user is found and there are no errors, return only the id, email, fullname, bio fields.
-       *     -- this is important, don't return the password!
-       *
-       *  You'll need to complete the query first before attempting this exercise.
-       */
-
-      const findUserQuery = {
-        text: "", // @TODO: Basic queries
-        values: [id],
-      };
+      
+      try {
+        const findUserQuery = {
+          text: `SELECT id, email, fullname, bio FROM users WHERE id=$1`,
+          values: [id],
+        };
+        const user = await postgres.query(findUserQuery);
+        
+        if (user.rows.length > 0 ) {
+          return user.rows[0];
+        } else  {
+          throw 'User is not found'
+        }
+      }
+      catch(e) {
+        throw e
+      }
 
       /**
        *  Refactor the following code using the error handling logic described above.
@@ -74,63 +67,86 @@ module.exports = postgres => {
        *  If the password is incorrect throw 'User or Password incorrect'
        */
 
-      const user = await postgres.query(findUserQuery);
-      return user;
       // -------------------------------
     },
     async getItems(idToOmit) {
-      const items = await postgres.query({
-        /**
-         *  @TODO:
-         *
-         *  idToOmit = ownerId
-         *
-         *  Get all Items. If the idToOmit parameter has a value,
-         *  the query should only return Items were the ownerid !== idToOmit
-         *
-         *  Hint: You'll need to use a conditional AND/WHERE clause
-         *  to your query text using string interpolation
-         */
+      try {
+        const items = await postgres.query({
+          text: `SELECT * FROM items WHERE itemowner <> $1`,
+          values: idToOmit ? [idToOmit] : [''],
+        });
 
-        text: ``,
-        values: idToOmit ? [idToOmit] : [],
-      });
-      return items.rows;
+        if (items.rows.length > 0) {
+          return items.rows;
+        } else {
+          throw 'Items are not found'
+        }
+      } catch(e) {
+        throw e
+      }
     },
     async getItemsForUser(id) {
-      const items = await postgres.query({
-        /**
-         *  @TODO:
-         *  Get all Items for user using their id
-         */
-        text: ``,
-        values: [id],
-      });
-      return items.rows;
+      try {
+        const items = await postgres.query({
+          text: `SELECT * FROM items WHERE itemowner = $1`,
+          values: [id],
+        });
+        if ( items.rows.length > 0 ){
+          return items.rows;
+        } else {
+          throw 'Owned items are not found'
+        }
+      } catch(e) {
+        throw e
+      }
     },
     async getBorrowedItemsForUser(id) {
-      const items = await postgres.query({
-        /**
-         *  @TODO:
-         *  Get all Items borrowed by user using their id
-         */
-        text: ``,
-        values: [id],
-      });
-      return items.rows;
+      try {
+        const items = await postgres.query({
+          text: `SELECT * FROM items WHERE borrower = $1`,
+          values: [id],
+        });
+        if ( items.rows.length > 0 ){
+          return items.rows;
+        } else {
+          throw 'Burrowed items are not found'
+        }
+      } catch(e) {
+        throw e
+      }
     },
     async getTags() {
-      const tags = await postgres.query('SELECT * FROM tags');
-      return tags.rows;
+      try {
+        const tags = await postgres.query('SELECT * FROM tags');
+        if ( tags.rows.length > 0 ) {
+          return tags.rows;
+        } else {
+          throw null
+          // throw 'Tags are not found'
+        }
+      } catch(e) {
+        throw e
+      }
     },
     async getTagsForItem(id) {
-      const tagsQuery = {
-        text: ``, // @TODO: Advanced query Hint: use INNER JOIN
-        values: [id],
-      };
-
-      const tags = await postgres.query(tagsQuery);
-      return tags.rows;
+      try {
+        const tagsQuery = {
+          text: `SELECT A.id, A.title FROM itemtags
+          INNER JOIN tags AS A
+          ON A.id = tagid
+          WHERE itemid = $1;`,
+          values: [id],
+        };
+        const tags = await postgres.query(tagsQuery);
+        if ( tags.rows.length > 0 ) {
+          return tags.rows;
+        } else {
+          return null;
+          // throw 'Tags are not found'
+        }
+      } catch(e) {
+        throw e
+      }
     },
     async saveNewItem({ item, user }) {
       /**
