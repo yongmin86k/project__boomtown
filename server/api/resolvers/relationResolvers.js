@@ -51,12 +51,6 @@ const relationResolvers = {
       } catch(e) {
         throw new ApolloError(e);
       }
-      /**
-       * @TODO: Replace this mock return statement with the correct user from Postgres
-       * or null in the case where the item has not been borrowed.
-       */
-      return null
-      // -------------------------------
     }
   },
 };
