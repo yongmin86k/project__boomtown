@@ -1,5 +1,5 @@
 # editor
-
+.prettierignore
 .vs
 .vscode
 

@@ -134,7 +134,7 @@ const mutationResolvers = app => ({
     context.req.res.clearCookie(app.get("JWT_COOKIE_NAME"));
     return true;
   },
-  async addItem(parent, {input}, {pgResource}, info) {
+  async addItem(parent, { input }, { pgResource }, info) {
     /**
      *  @TODO: Destructuring
      *
@@ -152,7 +152,7 @@ const mutationResolvers = app => ({
     const user = 1; // DUMMY USER
     const newItem = await pgResource.saveNewItem({
       item: input,
-      user,
+      user
     });
 
     return newItem;

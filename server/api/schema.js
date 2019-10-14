@@ -64,6 +64,6 @@ module.exports = gql`
     signup: Boolean
     login: Boolean
     logout: Boolean
-    addItem( input: NewItemInput! ): Item
+    addItem(input: NewItemInput!): Item
   }
 `;

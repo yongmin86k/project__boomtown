@@ -10,7 +10,7 @@ module.exports = postgres => {
     async createUser({ fullname, email, password }) {
       const newUserInsert = {
         text: "", // @TODO: Authentication - Server
-        values: [fullname, email, password],
+        values: [fullname, email, password]
       };
       try {
         const user = await postgres.query(newUserInsert);
@@ -29,7 +29,7 @@ module.exports = postgres => {
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
         text: "", // @TODO: Authentication - Server
-        values: [email],
+        values: [email]
       };
       try {
         const user = await postgres.query(findUserQuery);
@@ -40,22 +40,20 @@ module.exports = postgres => {
       }
     },
     async getUserById(id) {
-      
       try {
         const findUserQuery = {
           text: `SELECT id, email, fullname, bio FROM users WHERE id=$1`,
-          values: [id],
+          values: [id]
         };
         const user = await postgres.query(findUserQuery);
-        
-        if (user.rows.length > 0 ) {
+
+        if (user.rows.length > 0) {
           return user.rows[0];
-        } else  {
-          throw 'User is not found'
+        } else {
+          throw "User is not found";
         }
-      }
-      catch(e) {
-        throw e
+      } catch (e) {
+        throw e;
       }
 
       /**
@@ -73,59 +71,59 @@ module.exports = postgres => {
       try {
         const items = await postgres.query({
           text: `SELECT * FROM items WHERE itemowner <> $1`,
-          values: idToOmit ? [idToOmit] : [''],
+          values: idToOmit ? [idToOmit] : [""]
         });
 
         if (items.rows.length > 0) {
           return items.rows;
         } else {
-          throw 'Items are not found'
+          throw "Items are not found";
         }
-      } catch(e) {
-        throw e
+      } catch (e) {
+        throw e;
       }
     },
     async getItemsForUser(id) {
       try {
         const items = await postgres.query({
           text: `SELECT * FROM items WHERE itemowner = $1`,
-          values: [id],
+          values: [id]
         });
-        if ( items.rows.length > 0 ){
+        if (items.rows.length > 0) {
           return items.rows;
         } else {
-          throw 'Owned items are not found'
+          throw "Owned items are not found";
         }
-      } catch(e) {
-        throw e
+      } catch (e) {
+        throw e;
       }
     },
     async getBorrowedItemsForUser(id) {
       try {
         const items = await postgres.query({
           text: `SELECT * FROM items WHERE borrower = $1`,
-          values: [id],
+          values: [id]
         });
-        if ( items.rows.length > 0 ){
+        if (items.rows.length > 0) {
           return items.rows;
         } else {
-          throw 'Burrowed items are not found'
+          throw "Burrowed items are not found";
         }
-      } catch(e) {
-        throw e
+      } catch (e) {
+        throw e;
       }
     },
     async getTags() {
       try {
-        const tags = await postgres.query('SELECT * FROM tags');
-        if ( tags.rows.length > 0 ) {
+        const tags = await postgres.query("SELECT * FROM tags");
+        if (tags.rows.length > 0) {
           return tags.rows;
         } else {
-          throw null
+          throw null;
           // throw 'Tags are not found'
         }
-      } catch(e) {
-        throw e
+      } catch (e) {
+        throw e;
       }
     },
     async getTagsForItem(id) {
@@ -135,21 +133,20 @@ module.exports = postgres => {
           INNER JOIN tags AS A
           ON A.id = tagid
           WHERE itemid = $1;`,
-          values: [id],
+          values: [id]
         };
         const tags = await postgres.query(tagsQuery);
-        if ( tags.rows.length > 0 ) {
+        if (tags.rows.length > 0) {
           return tags.rows;
         } else {
           return null;
           // throw 'Tags are not found'
         }
-      } catch(e) {
-        throw e
+      } catch (e) {
+        throw e;
       }
     },
     async saveNewItem({ item, user }) {
-
       return new Promise((resolve, reject) => {
         /**
          * Begin transaction by opening a long-lived connection
@@ -159,22 +156,23 @@ module.exports = postgres => {
           try {
             // Begin postgres transaction
             client.query("BEGIN", async err => {
-              
               const { title, description, tags } = item;
-              
+
               // Generate new Item query
               const newItemQuery = {
                 text: `INSERT INTO items(title, description, itemowner) VALUES($1, $2, $3) RETURNING *;`,
                 values: [title, description, user]
               };
-              
+
               // Insert new Item
               const newItem = await postgres.query(newItemQuery);
-              
+
               // Generate tag relationships query
               const itemid = newItem.rows[0].id;
               const tagRelationQuery = await tagsQueryString(tags, itemid, "");
-              const ArrayTagId = tags.map( tag => { return tag.id});
+              const ArrayTagId = tags.map(tag => {
+                return tag.id;
+              });
               const newTagQuery = {
                 text: `INSERT INTO itemtags(tagid, itemid) VALUES${tagRelationQuery}`,
                 values: ArrayTagId
@@ -190,7 +188,7 @@ module.exports = postgres => {
                 }
                 // release the client back to the pool
                 done();
-                resolve(newItem.rows[0])
+                resolve(newItem.rows[0]);
               });
             });
           } catch (e) {
@@ -209,6 +207,6 @@ module.exports = postgres => {
           }
         });
       }); // end new Promise()
-    },
+    }
   };
 };
