@@ -1,8 +1,8 @@
-function tagsQueryString(tags, itemid, result) {
-  for (i = tags.length; i > 0; i--) {
-    result += `($${i}, ${itemid}),`;
+function tagsQueryString(tags, result) {
+  for (i = 0; i < tags.length; i++) {
+    result += `((select id from new_item), $${i+4}),`;
   }
-  return result.slice(0, -1) + ";";
+  return result.slice(0, -1);
 }
 
 module.exports = postgres => {
@@ -147,66 +147,27 @@ module.exports = postgres => {
       }
     },
     async saveNewItem({ item, user }) {
-      return new Promise((resolve, reject) => {
-        /**
-         * Begin transaction by opening a long-lived connection
-         * to a client from the client pool.
-         */
-        postgres.connect((err, client, done) => {
-          try {
-            // Begin postgres transaction
-            client.query("BEGIN", async err => {
-              const { title, description, tags } = item;
-
-              // Generate new Item query
-              const newItemQuery = {
-                text: `INSERT INTO items(title, description, itemowner) VALUES($1, $2, $3) RETURNING *;`,
-                values: [title, description, user]
-              };
-
-              // Insert new Item
-              const newItem = await postgres.query(newItemQuery);
-
-              // Generate tag relationships query
-              const itemid = newItem.rows[0].id;
-              const tagRelationQuery = await tagsQueryString(tags, itemid, "");
-              const ArrayTagId = tags.map(tag => {
-                return tag.id;
-              });
-              const newTagQuery = {
-                text: `INSERT INTO itemtags(tagid, itemid) VALUES${tagRelationQuery}`,
-                values: ArrayTagId
-              };
-
-              // Insert tags
-              await postgres.query(newTagQuery);
-
-              // Commit the entire transaction!
-              client.query("COMMIT", err => {
-                if (err) {
-                  throw err;
-                }
-                // release the client back to the pool
-                done();
-                resolve(newItem.rows[0]);
-              });
-            });
-          } catch (e) {
-            // Something went wrong
-            client.query("ROLLBACK", err => {
-              if (err) {
-                throw err;
-              }
-              // release the client back to the pool
-              done();
-            });
-            switch (true) {
-              default:
-                throw e;
-            }
-          }
-        });
-      }); // end new Promise()
-    }
+      try {
+        const { title, description, tags } = item;
+        const tagRelationQuery = await tagsQueryString(tags, "");
+        const ArrayTagId = tags.map(tag => { return tag.id;});
+        const newItemQuery = {
+          text: `WITH new_item AS ( 
+                  INSERT INTO items(title, description, itemowner) 
+                  VALUES ($1, $2, $3) 
+                  RETURNING *
+                  ), new_relation AS ( 
+                  INSERT INTO itemtags(itemid, tagid) 
+                    VALUES ${tagRelationQuery}
+                  ) SELECT * FROM new_item`,
+          values: [title,  description, user].concat( ArrayTagId )
+          };
+          const new_item = await postgres.query(newItemQuery);
+          return new_item.rows[0]
+        
+      } catch(e) {
+        throw e;
+      }
+    } // end async saveNewItem()
   };
 };
