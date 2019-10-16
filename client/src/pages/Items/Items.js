@@ -1,8 +1,10 @@
+// stateless(presentation) components
+
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import styles from './styles';
 
-const Items = ({ classes }) => {
+const Items = ({ classes, items }) => {
   return (
     <div>
       <p>
