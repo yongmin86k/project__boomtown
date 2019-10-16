@@ -35,7 +35,7 @@ module.exports = ({ app, pgResource }) => {
         // TODO:
         // If there is a token, verify that token to get user info and assign it to user variable
         // return req, token, user, pgResource
-        return { pgResource };
+        return { req, pgResource };
       } catch (e) {
         // throw error
       }
@@ -46,7 +46,7 @@ module.exports = ({ app, pgResource }) => {
   apolloServer.applyMiddleware({
     app,
     // @TODO: Add the CORS_CONFIG from your application configuration
-    cors: undefined
+    cors: app.get("CORSE_CONFIG")
     // -------------------------------
   });
 };
