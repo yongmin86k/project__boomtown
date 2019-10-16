@@ -67,6 +67,21 @@ module.exports = postgres => {
 
       // -------------------------------
     },
+    async getItemByID(id){
+      try {
+        const item = await postgres.query({
+          text: `SELECT * FROM items WHERE id = $1`,
+          values: [id]
+        });
+        if (item.rows.length > 0 ){
+          return item.rows[0];
+        } else {
+          throw `Item ID ${id} is not found`;
+        }
+      } catch(e) {
+        throw e;
+      }
+    },
     async getItems(idToOmit) {
       try {
         const items = await postgres.query({

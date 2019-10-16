@@ -25,6 +25,14 @@ const queryResolvers = app => ({
       throw new ApolloError(e);
     }
   },
+  async item(parent, { id }, {pgResource}, info) {
+    try {
+      const item = await pgResource.getItemByID(id);
+      return item;
+    } catch(e) {
+      throw new ApolloError(e);
+    }
+  },
   async items(parent, { filter }, { pgResource }, info) {
     try {
       const items = await pgResource.getItems(filter);
