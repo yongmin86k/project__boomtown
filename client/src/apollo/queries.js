@@ -39,12 +39,15 @@ export const ITEM_QUERY = gql`
   ${ItemFields}
 `;
 
-// export const ALL_ITEMS_QUERY = gql`
-//   query items($filter: ID) {
-//     # @TODO: Query items (optionally by tag id) and return the ItemFields fragment.
-//   }
-//   ${ItemFields}
-// `;
+// # @TODO: Query items (optionally by tag id) and return the ItemFields fragment.
+export const ALL_ITEMS_QUERY = gql`
+  query items($filter: ID) {
+    items(filter: $filter) {
+      ...ItemFields
+    }
+  }
+  ${ItemFields}
+`;
 
 // export const ALL_USER_ITEMS_QUERY = gql`
 //   query user($id: ID!) {
