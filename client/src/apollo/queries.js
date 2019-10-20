@@ -29,6 +29,7 @@ const ItemFields = gql`
     }
   }
 `;
+
 // QUERY :: an item by its id
 export const ITEM_QUERY = gql`
   query getItem($id: ID!) {
@@ -39,7 +40,7 @@ export const ITEM_QUERY = gql`
   ${ItemFields}
 `;
 
-// # @TODO: Query items (optionally by tag id) and return the ItemFields fragment.
+// QUERY :: all items filtered by userID
 export const ALL_ITEMS_QUERY = gql`
   query items($filter: ID) {
     items(filter: $filter) {
@@ -49,26 +50,51 @@ export const ALL_ITEMS_QUERY = gql`
   ${ItemFields}
 `;
 
-// export const ALL_USER_ITEMS_QUERY = gql`
-//   query user($id: ID!) {
-//     # @TODO: Query the bio, email, fullname, items, and borrowed for the user by id
-//     # Use the ItemFields fragment for the items and borrowed fields.
-//   }
-//   ${ItemFields}
-// `;
+// QUERY :: all items by userID
+export const ALL_USER_ITEMS_QUERY = gql`
+  query user($id: ID!) {
+    user(id: $id) {
+      fullname
+      bio
+      email
+      items {
+        ...ItemFields
+      }
+      borrowed {
+        ...ItemFields
+      }
+    }
+  }
+  ${ItemFields}
+`;
 
-// export const ALL_TAGS_QUERY = gql`
-//   query {
-//     # @TODO: Query the id and title fields for tags.
-//   }
-// `;
+// QUERY :: all tags
+export const ALL_TAGS_QUERY = gql`
+  query {
+    tags {
+      id
+      title
+    }
+  }
+`;
 
-// export const ADD_ITEM_MUTATION = gql`
-//   mutation addItem($item: NewItemInput!) {
-//     # @TODO: Pass the item and image into the addItem mutation as arguments
-//     # and return the new item id when the mutation is complete.
-//   }
-// `;
+// MUTATION :: add item with tags
+export const ADD_ITEM_MUTATION = gql`
+  mutation addItem(
+    $title: String!
+    $description: String!
+    $tags: [AssignedTag]!
+  ) {
+    addItem(input: { title: $title, description: $description, tags: $tags }) {
+      title
+      description
+      tags {
+        id
+        title
+      }
+    }
+  }
+`;
 
 // /**
 //  * Auth-related queries and mutations.
