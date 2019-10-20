@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { NavLink } from "react-router-dom";
 import {
   IconButton,
   Menu,
@@ -13,7 +14,7 @@ import {
   PowerSettingsNew as PowerSettingsNewIcon
 } from "@material-ui/icons";
 
-export default function SimpleMenu() {
+const SimpleMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = event => {
@@ -23,12 +24,6 @@ export default function SimpleMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-//   const options = [
-//     { icon: "<FingerprintIcon/>", label: "Your Profile", link: "/" },
-//     { icon: null, label: "Sign Out", link: "/" }
-//   ];
-  
 
   return (
     <Fragment>
@@ -48,7 +43,7 @@ export default function SimpleMenu() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem>
+        <MenuItem component={NavLink} to={'/profile'}>
           <ListItemIcon>
             <FingerprintIcon fontSize="default" />
           </ListItemIcon>
@@ -56,6 +51,7 @@ export default function SimpleMenu() {
             Your Profile
           </Typography>
         </MenuItem>
+        
         <MenuItem>
           <ListItemIcon>
             <PowerSettingsNewIcon fontSize="default" />
@@ -64,14 +60,9 @@ export default function SimpleMenu() {
             Sign Out
           </Typography>
         </MenuItem>
-
-        {/* {options.map((option, index) => (
-          <MenuItem key={index} onClick={handleClose}>
-            <ListItemIcon>{option.icon}</ListItemIcon>
-            {option.label}
-          </MenuItem>
-        ))} */}
       </Menu>
     </Fragment>
   );
-}
+};
+
+export default SimpleMenu;
