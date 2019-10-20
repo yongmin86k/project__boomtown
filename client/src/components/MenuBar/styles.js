@@ -14,6 +14,7 @@ const styles = theme => ({
   },
   btnShare: {
     boxShadow: "none",
+    marginRight: theme.spacing(2),
     "&:hover": {
       boxShadow: "none",
       backgroundColor: "rgba(0, 0, 0, 0.08)"

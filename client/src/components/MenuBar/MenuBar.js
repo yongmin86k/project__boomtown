@@ -24,6 +24,7 @@ const MenuBar = ({ classes }) => (
           variant="extended"
           color="primary"
           aria-label="share"
+          href="/share"
         >
           <AddCircleIcon className={classes.extendedIcon} />
           Share something
