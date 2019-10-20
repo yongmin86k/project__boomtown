@@ -15,7 +15,6 @@ import styles from "./styles";
 import ProfileImg from "../../images/vanellope.jpg";
 
 const Profile = ({ classes, userInfo }) => {
-  console.log(userInfo);
   return (
     <Container
       component="section"
@@ -36,7 +35,8 @@ const Profile = ({ classes, userInfo }) => {
             />
             <CardContent className={classes.cardProfileContent}>
               <Typography variant="h6" component="p">
-                {userInfo.items.length} Items shared {userInfo.borrowed.length}{" "}
+                {userInfo.items ? userInfo.items.length : 0} Items shared{" "}
+                {userInfo.borrowed ? userInfo.borrowed.length : 0}{" "}
                 Items borrowed
               </Typography>
               <Typography component="p">
@@ -47,7 +47,7 @@ const Profile = ({ classes, userInfo }) => {
         </Grid>
       </Grid>
 
-      {userInfo.items.length ? (
+      {userInfo.items ? (
         <ProfileItems
           classes={classes}
           title={"Shared Items"}
@@ -56,7 +56,7 @@ const Profile = ({ classes, userInfo }) => {
       ) : (
         ``
       )}
-      {userInfo.borrowed.length ? (
+      {userInfo.borrowed ? (
         <ProfileItems
           classes={classes}
           title={"Borrowed Items"}

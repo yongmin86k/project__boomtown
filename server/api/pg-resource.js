@@ -122,7 +122,8 @@ module.exports = postgres => {
         if (items.rows.length > 0) {
           return items.rows;
         } else {
-          throw "Burrowed items are not found";
+          return null;
+          // throw "Burrowed items are not found";
         }
       } catch (e) {
         throw e;
@@ -134,7 +135,7 @@ module.exports = postgres => {
         if (tags.rows.length > 0) {
           return tags.rows;
         } else {
-          throw null;
+          return null;
           // throw 'Tags are not found'
         }
       } catch (e) {
