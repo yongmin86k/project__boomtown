@@ -18,7 +18,7 @@ const styles = theme => ({
     "&:hover": {
       boxShadow: "none",
       backgroundColor: "rgba(0, 0, 0, 0.08)"
-    }
+    },
   },
   extendedIcon: {
     marginRight: theme.spacing(1)
