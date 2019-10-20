@@ -1,10 +1,19 @@
 import React from "react";
+import { Container } from "@material-ui/core";
 import { ItemsGrid } from "../../components";
+import { withStyles } from "@material-ui/core/styles";
+import styles from "./styles";
 
-const Items = ({ items }) => {
+const Items = ({ classes, items }) => {
   return (
-    <ItemsGrid items={items} />
+    <Container
+      component="section"
+      maxWidth={false}
+      className={classes.pageItems}
+    >
+      <ItemsGrid items={items} />
+    </Container>
   );
 };
 
-export default Items;
+export default withStyles(styles)(Items);
