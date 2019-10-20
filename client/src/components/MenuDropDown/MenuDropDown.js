@@ -23,6 +23,11 @@ export default function SimpleMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+//   const options = [
+//     { icon: "<FingerprintIcon/>", label: "Your Profile", link: "/" },
+//     { icon: null, label: "Sign Out", link: "/" }
+//   ];
   
 
   return (
@@ -60,6 +65,12 @@ export default function SimpleMenu() {
           </Typography>
         </MenuItem>
 
+        {/* {options.map((option, index) => (
+          <MenuItem key={index} onClick={handleClose}>
+            <ListItemIcon>{option.icon}</ListItemIcon>
+            {option.label}
+          </MenuItem>
+        ))} */}
       </Menu>
     </Fragment>
   );

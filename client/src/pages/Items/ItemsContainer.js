@@ -1,5 +1,3 @@
-// stateful components
-
 import React, { Component } from "react";
 import Items from "./Items";
 // import FullScreenLoader from '../../components/FullScreenLoader';
@@ -13,7 +11,7 @@ class ItemsContainer extends Component {
   render() {
     
     return (
-      <Query query={ALL_ITEMS_QUERY} variables={{filter: 1}}>
+      <Query query={ALL_ITEMS_QUERY} variables={{ filter: 2 }}>
         {({ loading, error, data }) => {
           if (loading) return "Loading";
           if (error) return `Error: ${error}`;
@@ -22,7 +20,6 @@ class ItemsContainer extends Component {
       </Query>
     );
   }
-
 }
 
 export default ItemsContainer;

@@ -1,31 +1,20 @@
 import React from "react";
 import styles from "./styles";
-import {
-  AppBar,
-  Toolbar,
-  Fab,
-  IconButton,
-  Icon
-} from "@material-ui/core";
+import { AppBar, Toolbar, Fab, IconButton, Icon } from "@material-ui/core";
 
-import {
-  AddCircle as AddCircleIcon
-} from "@material-ui/icons";
+import { AddCircle as AddCircleIcon } from "@material-ui/icons";
 
 import { withStyles } from "@material-ui/core";
 
 import logo from "../../images/boomtown.svg";
-import {MenuDropDown} from "../../components";
+import { MenuDropDown } from "../../components";
 
 const MenuBar = ({ classes }) => (
-  <AppBar position="static">
+  <AppBar position="sticky">
     <Toolbar>
       <IconButton color="inherit" aria-label="menu" href="/items">
-        <Icon
-          className={classes.menuButton}
-          classes={{ root: classes.iconRoot }}
-        >
-          <img className={classes.imgLogo} src={logo} />
+        <Icon className={classes.menuButton}>
+          <img className={classes.imgLogo} src={logo} alt="Boomtown" />
         </Icon>
       </IconButton>
 
@@ -39,9 +28,8 @@ const MenuBar = ({ classes }) => (
           <AddCircleIcon className={classes.extendedIcon} />
           Share something
         </Fab>
-        
-        <MenuDropDown/>
-        
+
+        <MenuDropDown />
       </div>
     </Toolbar>
   </AppBar>
