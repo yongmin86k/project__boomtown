@@ -107,7 +107,8 @@ module.exports = postgres => {
         if (items.rows.length > 0) {
           return items.rows;
         } else {
-          throw "Owned items are not found";
+          return null
+          // throw "Owned items are not found";
         }
       } catch (e) {
         throw e;
