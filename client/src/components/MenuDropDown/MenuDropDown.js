@@ -43,7 +43,7 @@ const SimpleMenu = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem component={NavLink} to={'/profile'}>
+        <MenuItem component={NavLink} to={'/profile'} onClick={handleClose}>
           <ListItemIcon>
             <FingerprintIcon fontSize="default" />
           </ListItemIcon>
@@ -52,7 +52,7 @@ const SimpleMenu = () => {
           </Typography>
         </MenuItem>
         
-        <MenuItem>
+        <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <PowerSettingsNewIcon fontSize="default" />
           </ListItemIcon>
