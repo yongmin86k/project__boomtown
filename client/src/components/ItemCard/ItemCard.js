@@ -33,8 +33,10 @@ const ItemCard = ({ classes, itemInfo }) => (
         subheader="September 14, 2016"
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="h2">
-          {itemInfo.title}
+        <Typography aria-label={itemInfo.title} gutterBottom variant="h5" component="h2">
+          {itemInfo.title.length > 40
+            ? `${itemInfo.title.slice(0, 40)}...`
+            : itemInfo.title}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
           {itemInfo.tags
@@ -44,8 +46,10 @@ const ItemCard = ({ classes, itemInfo }) => (
                 .join(", ")
             : "No tags are found"}
         </Typography>
-        <Typography variant="body1" color="textPrimary" component="p">
-          {itemInfo.description}
+        <Typography aria-label={itemInfo.description} variant="body1" color="textPrimary" component="p">
+          {itemInfo.description.length > 150
+            ? `${itemInfo.description.slice(0, 150)}...`
+            : itemInfo.description}
         </Typography>
       </CardContent>
       <CardActions className={classes.cardMediaItemsBtn}>
