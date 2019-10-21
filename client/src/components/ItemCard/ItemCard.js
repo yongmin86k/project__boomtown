@@ -18,15 +18,6 @@ import KittyImg from "../../images/kitten_01.jpg";
 import ProfileImg from "../../images/ralph.jpg";
 
 const ItemCard = ({ classes, itemInfo }) => {
-  const defaultItemInfo = {
-    title: "Name your item",
-    itemowner: {
-      fullname: "User"
-    },
-    description: "Describe your item"
-  };
-  let info = itemInfo ? itemInfo : defaultItemInfo;
-
   return (
     <Grid
       item
@@ -40,42 +31,42 @@ const ItemCard = ({ classes, itemInfo }) => {
           <CardMedia
             className={classes.cardMediaItemsImg}
             image={KittyImg}
-            title={info.title}
+            title={itemInfo.title}
           />
         </CardActionArea>
         <CardHeader
-          avatar={<Avatar alt={info.itemowner.fullname} src={ProfileImg} />}
-          title={info.itemowner.fullname}
+          avatar={<Avatar alt={itemInfo.itemowner.fullname} src={ProfileImg} />}
+          title={itemInfo.itemowner.fullname}
           subheader="September 14, 2016"
         />
         <CardContent>
           <Typography
-            aria-label={info.title}
+            aria-label={itemInfo.title}
             gutterBottom
             variant="h5"
             component="h2"
           >
-            {info.title.length > 40
-              ? `${info.title.slice(0, 40)}...`
-              : info.title}
+            {itemInfo.title.length > 40
+              ? `${itemInfo.title.slice(0, 40)}...`
+              : itemInfo.title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {info.tags
-              ? info.tags
+            {itemInfo.tags
+              ? itemInfo.tags
                   .map(tag => tag.title)
                   .sort()
                   .join(", ")
               : "No tags are found"}
           </Typography>
           <Typography
-            aria-label={info.description}
+            aria-label={itemInfo.description}
             variant="body1"
             color="textPrimary"
             component="p"
           >
-            {info.description.length > 150
-              ? `${info.description.slice(0, 150)}...`
-              : info.description}
+            {itemInfo.description.length > 150
+              ? `${itemInfo.description.slice(0, 150)}...`
+              : itemInfo.description}
           </Typography>
         </CardContent>
         <CardActions className={classes.cardMediaItemsBtn}>
@@ -84,6 +75,16 @@ const ItemCard = ({ classes, itemInfo }) => {
       </Card>
     </Grid>
   );
+};
+
+ItemCard.defaultProps = {
+  itemInfo: {
+    title: "Name your item",
+    itemowner: {
+      fullname: "User"
+    },
+    description: "Describe your item"
+  }
 };
 
 export default withStyles(styles)(ItemCard);
