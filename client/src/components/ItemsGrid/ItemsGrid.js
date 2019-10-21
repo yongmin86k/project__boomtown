@@ -3,7 +3,7 @@ import { Grid } from "@material-ui/core";
 import { ItemCard } from "../../components";
 
 
-const ItemsGrid = ({ items }) => (
+const ItemsGrid = ( { items } ) => (
   
     <Grid container spacing={3}>
       {items.length
@@ -14,4 +14,4 @@ const ItemsGrid = ({ items }) => (
     </Grid>
 );
 
-export default (ItemsGrid);
+export default ItemsGrid;
