@@ -26,9 +26,15 @@ const ItemCard = ({ classes, itemInfo }) => {
     description: "Describe your item"
   };
   let info = itemInfo ? itemInfo : defaultItemInfo;
-  
+
   return (
-    <Grid item xs={12} sm={itemInfo ? 6 : 12} md={itemInfo ? 4 : 12}>
+    <Grid
+      item
+      xs={12}
+      sm={itemInfo ? 6 : 12}
+      md={itemInfo ? 4 : 12}
+      className={classes.cardGridItem}
+    >
       <Card>
         <CardActionArea>
           <CardMedia

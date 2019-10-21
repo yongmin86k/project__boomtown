@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import {
   FormControl,
   FormControlLabel,
@@ -8,6 +8,15 @@ import {
   Input,
   Button
 } from "@material-ui/core";
+import {
+  AcUnit as AcUnitIcon,
+  AccountBalance as AccountBalanceIcon,
+  AccountBalanceWallet as AccountBalanceWalletIcon,
+  Adb as AdbIcon,
+  AirportShuttle as AirportShuttleIcon,
+  Album as AlbumIcon
+} from "@material-ui/icons";
+
 import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
 import { Form, Field } from "react-final-form";
@@ -22,10 +31,9 @@ class ShareForm extends Component {
 
   render() {
     const { classes, tagInfo } = this.props;
-    console.log(tagInfo);
 
     return (
-      <Fragment>
+      <section className={classes.shareItemForm}>
         <Typography
           gutterBottom
           variant="h3"
@@ -93,12 +101,32 @@ class ShareForm extends Component {
                     return (
                       <FormControl fullWidth>
                         <FormGroup className={classes.ShareItemFormGroup}>
-                          {tagInfo.map(tag => (
+                          {tagInfo.map((tag, index) => (
                             <FormControlLabel
                               className={classes.ShareItemFormTag}
                               key={tag.id}
                               control={<Checkbox value={tag.id} />}
-                              label={tag.title}
+                              label={
+                                <p className={classes.ShareItemFormTagLabel}>
+                                  {tag.title} &nbsp;
+                                  {
+                                    ({ index } =
+                                      index === 0 ? (
+                                        <AcUnitIcon />
+                                      ) : index === 1 ? (
+                                        <AccountBalanceIcon />
+                                      ) : index === 2 ? (
+                                        <AccountBalanceWalletIcon />
+                                      ) : index === 3 ? (
+                                        <AdbIcon />
+                                      ) : index === 4 ? (
+                                        <AirportShuttleIcon />
+                                      ) : (
+                                        <AlbumIcon />
+                                      ))
+                                  }
+                                </p>
+                              }
                             />
                           ))}
                         </FormGroup>
@@ -119,7 +147,7 @@ class ShareForm extends Component {
             </form>
           )}
         />
-      </Fragment>
+      </section>
     );
   }
 }
