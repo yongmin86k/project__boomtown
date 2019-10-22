@@ -1,8 +1,8 @@
 const styles = theme => ({
-  shareItemForm: {
-    maxWidth: 500,
-    margin: "0 auto"
-  },
+  // shareItemForm: {
+  //   maxWidth: 500,
+  //   margin: "0 auto"
+  // },
   shareTitle: {
     fontWeight: 600
   },
