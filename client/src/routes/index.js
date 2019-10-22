@@ -10,7 +10,9 @@ const mainRoutes = ({ location }) => {
 
       <Switch>
         <Route exact path="/welcome" component={Home} />
+
         <Route path="/share" component={Share} />
+
         <Route path="/items" component={Items} />
         <Route path="/profile/:userid" component={Profile} />
         <Route path="/profile" component={Profile} />

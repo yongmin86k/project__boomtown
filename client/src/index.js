@@ -1,19 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { MuiThemeProvider } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import React from "react";
+import ReactDOM from "react-dom";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
 // @TODO: Uncomment each module as needed in your client app
-import { ApolloProvider } from 'react-apollo'
+import { ApolloProvider } from "react-apollo";
+
+import ItemPreviewProvider from "./context/ItemPreviewProvider";
 
 // import { Provider as ReduxProvider } from 'react-redux'
 // -------------------------------
 
-import registerServiceWorker from './registerServiceWorker';
-import theme from './theme';
+import registerServiceWorker from "./registerServiceWorker";
+import theme from "./theme";
 
-import client from './apollo'
+import client from "./apollo";
 
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "./routes";
 
 /**
@@ -41,20 +43,22 @@ import Routes from "./routes";
 // @TODO: Remove this import once you have your router working below
 // -------------------------------
 
-import './index.css';
+import "./index.css";
 
 const App = () => {
   return (
     <ApolloProvider client={client}>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
-        <Router>
-          <Routes/>
-        </Router>
+        <ItemPreviewProvider>
+          <Router>
+            <Routes />
+          </Router>
+        </ItemPreviewProvider>
       </MuiThemeProvider>
     </ApolloProvider>
   );
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));
 registerServiceWorker();

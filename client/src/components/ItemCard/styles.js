@@ -1,8 +1,4 @@
 const styles = theme => ({
-  cardGridItem: {
-    maxWidth: 500,
-    margin: "0 auto"
-  },
   cardMediaItemsImg: {
     paddingTop: "52%"
   },
