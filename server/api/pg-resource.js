@@ -1,6 +1,6 @@
 function tagsQueryString(tags, result) {
   for (i = 0; i < tags.length; i++) {
-    result += `((select id from new_item), $${i + 4}),`;
+    result += `((select id from new_item), $${i + 5}),`;
   }
   return result.slice(0, -1);
 }
@@ -67,18 +67,18 @@ module.exports = postgres => {
 
       // -------------------------------
     },
-    async getItemByID(id){
+    async getItemByID(id) {
       try {
         const item = await postgres.query({
           text: `SELECT * FROM items WHERE id = $1`,
           values: [id]
         });
-        if (item.rows.length > 0 ){
+        if (item.rows.length > 0) {
           return item.rows[0];
         } else {
           throw `Item ID ${id} is not found`;
         }
-      } catch(e) {
+      } catch (e) {
         throw e;
       }
     },
@@ -107,7 +107,7 @@ module.exports = postgres => {
         if (items.rows.length > 0) {
           return items.rows;
         } else {
-          return null
+          return null;
           // throw "Owned items are not found";
         }
       } catch (e) {
@@ -165,21 +165,22 @@ module.exports = postgres => {
     },
     async saveNewItem({ item, user }) {
       try {
-        const { title, description, tags } = item;
+        console.log(item);
+        const { title, description, tags, imageurl } = item;
         const tagRelationQuery = await tagsQueryString(tags, "");
         const ArrayTagId = tags.map(tag => {
           return tag.id;
         });
         const newItemQuery = {
           text: `WITH new_item AS ( 
-                  INSERT INTO items(title, description, itemowner) 
-                  VALUES ($1, $2, $3) 
+                  INSERT INTO items(title, description, itemowner, imageurl) 
+                  VALUES ($1, $2, $3, $4) 
                   RETURNING *
                   ), new_relation AS ( 
                   INSERT INTO itemtags(itemid, tagid) 
                     VALUES ${tagRelationQuery}
                   ) SELECT * FROM new_item`,
-          values: [title, description, user].concat(ArrayTagId)
+          values: [title, description, user, imageurl].concat(ArrayTagId)
         };
         const new_item = await postgres.query(newItemQuery);
         return new_item.rows[0];

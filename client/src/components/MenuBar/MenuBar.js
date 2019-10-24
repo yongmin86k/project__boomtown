@@ -51,7 +51,7 @@ class MenuBar extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <AppBar position="sticky">
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             color="inherit"
@@ -65,7 +65,11 @@ class MenuBar extends Component {
           </IconButton>
 
           <div className={classes.menuBar}>
-            <Slide direction="left" in={this.state.activeShareBtn}>
+            <Slide
+              direction="left"
+              in={this.state.activeShareBtn}
+              unmountOnExit
+            >
               <Fab
                 className={classes.btnShare}
                 variant="extended"
@@ -73,14 +77,6 @@ class MenuBar extends Component {
                 aria-label="share"
                 component={NavLink}
                 to={"/share"}
-                // isActive={match => {
-                //   if (!match) {
-                //     return true;
-                //   }
-                //   return false;
-                // }}
-                // aria-current="true"
-                // ref={this.btnShareActive}
               >
                 <AddCircleIcon className={classes.extendedIcon} />
                 Share something

@@ -66,6 +66,7 @@ module.exports = `
   input NewItemInput {
     title: String!
     description: String
+    imageurl: String
     tags: [AssignedTag]!
   }
 

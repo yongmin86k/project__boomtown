@@ -108,7 +108,6 @@ class ShareForm extends Component {
                             onSubmit={e => {
                               handleSubmit(e);
                               form.reset();
-                              // this.resetItems(resetPreview);
                               resetPreview();
                             }}
                           >
@@ -126,6 +125,22 @@ class ShareForm extends Component {
                               }}
                             />
                             {/* end FormSpy */}
+                            <Field
+                              name="imageurl"
+                              render={({ input, meta }) => (
+                                <Input
+                                  className={classes.ShareItemFormContents}
+                                  type="text"
+                                  fullWidth
+                                  placeholder="Image url of your Item"
+                                  inputProps={{
+                                    "aria-label": "Item url"
+                                  }}
+                                  {...input}
+                                  value={input.value}
+                                />
+                              )}
+                            />
                             <Field
                               name="title"
                               render={({ input, meta }) => (
@@ -180,14 +195,15 @@ class ShareForm extends Component {
                                       <Field
                                         key={tag.id}
                                         name="tags"
+                                        type="checkbox"
                                         value={tag.title}
                                         render={({ input, meta }) => {
                                           return (
                                             <FormControlLabel
+                                              {...input}
                                               className={
                                                 classes.ShareItemFormTag
                                               }
-                                              {...input}
                                               value={tag.title}
                                               control={
                                                 <Checkbox

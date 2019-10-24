@@ -1,31 +1,37 @@
 import React, { Fragment } from "react";
-import { Redirect, Route, Switch, withRouter } from "react-router-dom";
-import { MenuBar } from "../components";
+import { Redirect, Route, Switch } from "react-router-dom";
+import { MenuBar, PrivateRoute } from "../components";
 import { Home, Items, Profile, Share } from "../pages";
+import { ViewerContext } from "../context/ViewerProvider";
 
-const mainRoutes = ({ location }) => {
+const AppRoutes = () => {
   return (
-    <Fragment>
-      {location.pathname !== "/welcome" ? <MenuBar /> : ``}
+    <ViewerContext.Consumer>
+      {({ viewer }) => {
+        if (!viewer) {
+          return (
+            <Switch>
+              <Route exact path="/welcome" component={Home} />
+              <Redirect from="*" to="/welcome" />
+            </Switch>
+          );
+        }
+        return (
+          <Fragment>
+            <MenuBar />
+            <Switch>
+              <PrivateRoute exact path="/share" component={Share} />
+              <PrivateRoute exact path="/items" component={Items} />
+              <PrivateRoute exact path="/profile/:userid" component={Profile} />
+              <PrivateRoute exact path="/profile" component={Profile} />
 
-      <Switch>
-        <Route exact path="/welcome" component={Home} />
-
-        <Route path="/share" component={Share} />
-
-        <Route path="/items" component={Items} />
-        <Route path="/profile/:userid" component={Profile} />
-        <Route path="/profile" component={Profile} />
-        <Redirect from="*" to="/items" />
-
-        {/**
-         *
-         * Later, we'll add logic to send users to one set of routes if they're logged in,
-         * or only view the /welcome page if they are not.
-         */}
-      </Switch>
-    </Fragment>
+              <Redirect from="*" to="/items" />
+            </Switch>
+          </Fragment>
+        );
+      }}
+    </ViewerContext.Consumer>
   );
 };
 
-export default withRouter(mainRoutes);
+export default AppRoutes;

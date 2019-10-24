@@ -15,7 +15,13 @@ const queryResolvers = app => ({
      *  To provide information about the user's session to the app, return the user.
      *  If there is no user, the user has signed out, in which case user will be null.
      */
-    return null;
+    const fakeUser = {
+      id: 100,
+      fullname: "Ralph",
+      bio: "Wreck everything",
+      email: "ralph@wreckit.com"
+    };
+    return fakeUser;
   },
   async user(parent, { id }, { pgResource }, info) {
     try {
@@ -25,11 +31,11 @@ const queryResolvers = app => ({
       throw new ApolloError(e);
     }
   },
-  async item(parent, { id }, {pgResource}, info) {
+  async item(parent, { id }, { pgResource }, info) {
     try {
       const item = await pgResource.getItemByID(id);
       return item;
-    } catch(e) {
+    } catch (e) {
       throw new ApolloError(e);
     }
   },

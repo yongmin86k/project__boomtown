@@ -83,11 +83,20 @@ export const ADD_ITEM_MUTATION = gql`
   mutation addItem(
     $title: String!
     $description: String!
+    $imageurl: String
     $tags: [AssignedTag]!
   ) {
-    addItem(input: { title: $title, description: $description, tags: $tags }) {
+    addItem(
+      input: {
+        title: $title
+        description: $description
+        imageurl: $imageurl
+        tags: $tags
+      }
+    ) {
       title
       description
+      imageurl
       tags {
         id
         title
@@ -100,27 +109,36 @@ export const ADD_ITEM_MUTATION = gql`
 //  * Auth-related queries and mutations.
 //  */
 
-// export const VIEWER_QUERY = gql`
-//   query {
-//     # @TODO: Query the id, email, fullname, and bio fields for the viewer.
-//   }
-// `;
-// export const LOGOUT_MUTATION = gql`
-//   mutation {
-//     # @TODO: Run the logout mutation.
-//   }
-// `;
+export const VIEWER_QUERY = gql`
+  query {
+    viewer {
+      id
+      email
+      fullname
+      bio
+    }
+  }
+`;
+export const LOGOUT_MUTATION = gql`
+  mutation {
+    logout
+  }
+`;
 
-// export const SIGNUP_MUTATION = gql`
-//   mutation signup($user: SignupInput!) {
-//     # @TODO: Pass the user into the signup mutation as an argument
-//     # and return the token and user id.
-//   }
-// `;
+export const SIGNUP_MUTATION = gql`
+  mutation signup($user: SignUpInput!) {
+    signup(user: $user) {
+      token
+      user
+    }
+  }
+`;
 
-// export const LOGIN_MUTATION = gql`
-//   mutation login($user: LoginInput!) {
-//     # @TODO: Pass the user into the login mutation as an argument
-//     # and return the token and user id.
-//   }
-// `;
+export const LOGIN_MUTATION = gql`
+  mutation login($user: LoginInput!) {
+    login(user: $user) {
+      token
+      user
+    }
+  }
+`;
