@@ -29,17 +29,17 @@ import { ADD_ITEM_MUTATION } from "../../apollo/queries";
 class ShareForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      disableButton: true
-    };
   }
 
   validate = ({ title, description }) => {
-    if (title && description) {
-      this.setState({ disableButton: false });
-      return;
+    const errors = {};
+    if (!title) {
+      errors.title = "Required";
     }
-    this.setState({ disableButton: true });
+    if (!description) {
+      errors.description = "Required";
+    }
+    return errors;
   };
 
   applyTags = (tags, tagInfo) => {
@@ -67,12 +67,11 @@ class ShareForm extends Component {
       variables: {
         title: values.title,
         description: values.description,
-        tags: this.applyTags(values.tags || [], tagInfo)
+        tags: this.applyTags(values.tags || [], tagInfo),
+        imageurl: values.imageurl
       }
     });
   };
-
-  // resetItems = () => {};
 
   render() {
     const { classes, tagInfo } = this.props;
@@ -102,7 +101,7 @@ class ShareForm extends Component {
                         this.saveItems(values, tagInfo, addItem);
                       }}
                       validate={this.validate}
-                      render={({ handleSubmit, form }) => (
+                      render={({ handleSubmit, form, valid }) => (
                         <Fragment>
                           <form
                             onSubmit={e => {
@@ -248,8 +247,9 @@ class ShareForm extends Component {
                             {/* // */}
                             <Button
                               variant="contained"
+                              size="large"
                               color="secondary"
-                              disabled={this.state.disableButton}
+                              disabled={!valid}
                               type="submit"
                             >
                               Share

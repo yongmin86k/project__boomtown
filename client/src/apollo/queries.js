@@ -108,7 +108,6 @@ export const ADD_ITEM_MUTATION = gql`
 // /**
 //  * Auth-related queries and mutations.
 //  */
-
 export const VIEWER_QUERY = gql`
   query {
     viewer {
@@ -138,7 +137,12 @@ export const LOGIN_MUTATION = gql`
   mutation login($user: LoginInput!) {
     login(user: $user) {
       token
-      user
+      user {
+        id
+        email
+        fullname
+        bio
+      }
     }
   }
 `;
