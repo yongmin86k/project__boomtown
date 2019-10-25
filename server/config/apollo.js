@@ -16,10 +16,9 @@ module.exports = ({ app, pgResource }) => {
     context: ({ req }) => {
       const tokenName = app.get("JWT_COOKIE_NAME");
       const token = req ? req.cookies[tokenName] : undefined;
-      let user = null;
+      let user = token ? jwt.decode(token, app.get("JWT_SECRET")) : undefined;
 
       try {
-        user = await jwt.decode(token, app.get("JWT_SECRET"));
         return { req, token, user, pgResource };
       } catch (error) {
         throw error;
