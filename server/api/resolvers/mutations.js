@@ -17,7 +17,6 @@ function generateToken(user, secret) {
   });
 }
 
-// @TODO: Uncomment these lines later when we add auth
 const jwt = require("jsonwebtoken");
 // const authMutations = require("./auth");
 // -------------------------------
@@ -90,8 +89,9 @@ const mutationResolvers = app => ({
     context.req.res.clearCookie(app.get("JWT_COOKIE_NAME"));
     return true;
   },
-  async addItem(parent, { input }, { pgResource }, info) {
-    const user = await jwt.decode(context.token, app.get("JWT_SECRET"));
+
+  async addItem(parent, { input }, { pgResource, token }, info) {
+    const user = await jwt.decode(token, app.get("JWT_SECRET"));
 
     const newItem = await pgResource.saveNewItem({
       item: input,
