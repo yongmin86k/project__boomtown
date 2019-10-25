@@ -27,17 +27,17 @@ module.exports = ({ app, pgResource }) => {
   const apolloServer = new ApolloServer({
     context: ({ req }) => {
       // @TODO: Uncomment this later when we add auth (to be added to Apollo's context)
-      // const tokenName = app.get("JWT_COOKIE_NAME")
-      // const token = req ? req.cookies[tokenName] : undefined
-      // let user = null
+      const tokenName = app.get("JWT_COOKIE_NAME");
+      const token = req ? req.cookies[tokenName] : undefined;
+      let user = null;
       // -------------------------------
       try {
         // TODO:
         // If there is a token, verify that token to get user info and assign it to user variable
         // return req, token, user, pgResource
-        return { req, pgResource };
-      } catch (e) {
-        // throw error
+        return { req, token, user, pgResource };
+      } catch (error) {
+        throw error;
       }
     },
     schema
@@ -45,8 +45,6 @@ module.exports = ({ app, pgResource }) => {
 
   apolloServer.applyMiddleware({
     app,
-    // @TODO: Add the CORS_CONFIG from your application configuration
     cors: app.get("CORSE_CONFIG")
-    // -------------------------------
   });
 };

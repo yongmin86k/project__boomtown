@@ -9,7 +9,7 @@ module.exports = postgres => {
   return {
     async createUser({ fullname, email, password }) {
       const newUserInsert = {
-        text: "", // @TODO: Authentication - Server
+        text: `INSERT INTO users(fullname, email,  password) VALUES($1, $2, $3) RETURNING *`,
         values: [fullname, email, password]
       };
       try {
@@ -28,7 +28,7 @@ module.exports = postgres => {
     },
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
-        text: "", // @TODO: Authentication - Server
+        text: `SELECT * FROM users WHERE email=$1`,
         values: [email]
       };
       try {
@@ -165,7 +165,6 @@ module.exports = postgres => {
     },
     async saveNewItem({ item, user }) {
       try {
-        console.log(item);
         const { title, description, tags, imageurl } = item;
         const tagRelationQuery = await tagsQueryString(tags, "");
         const ArrayTagId = tags.map(tag => {
