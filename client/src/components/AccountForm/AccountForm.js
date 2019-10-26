@@ -33,6 +33,7 @@ class AccountForm extends Component {
     return (
       <Form
         onSubmit={async values => {
+          this.setState({ error: null });
           try {
             BoolFormToggle
               ? await LOGIN_MUTATION({ variables: { user: values } })
@@ -44,13 +45,12 @@ class AccountForm extends Component {
         validate={values => {
           return validate(values, BoolFormToggle);
         }}
-        render={({ handleSubmit, form, valid }) => {
+        render={({ handleSubmit, form, valid, submitting }) => {
           return (
             <form
               onSubmit={e => {
                 handleSubmit(e);
                 form.reset();
-                console.log("Submitted");
               }}
               noValidate
               className={classes.accountForm}
@@ -143,7 +143,9 @@ class AccountForm extends Component {
                 </Grid>
               </FormControl>
               <Typography className={classes.errorMessage}>
-                {/* @TODO: Display sign-up and login errors */}
+                {this.state.error
+                  ? this.state.error.message.split(": ")[1]
+                  : ""}
               </Typography>
             </form>
           );
