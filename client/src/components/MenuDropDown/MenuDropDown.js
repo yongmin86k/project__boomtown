@@ -14,7 +14,11 @@ import {
   PowerSettingsNew as PowerSettingsNewIcon
 } from "@material-ui/icons";
 
-const SimpleMenu = () => {
+// import { graphql } from "react-apollo";
+import { graphql, compose } from "react-apollo";
+import { LOGOUT_MUTATION, VIEWER_QUERY } from "../../apollo/queries";
+
+const SimpleMenu = ({ LOGOUT_MUTATION }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = event => {
@@ -23,6 +27,10 @@ const SimpleMenu = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const logout = () => {
+    console.log(1);
   };
 
   return (
@@ -52,7 +60,16 @@ const SimpleMenu = () => {
           </Typography>
         </MenuItem>
 
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            try {
+              LOGOUT_MUTATION();
+            } catch (e) {
+              throw e;
+            }
+          }}
+        >
           <ListItemIcon>
             <PowerSettingsNewIcon fontSize="default" />
           </ListItemIcon>
@@ -65,4 +82,11 @@ const SimpleMenu = () => {
   );
 };
 
-export default SimpleMenu;
+const refetchQueries = [{ query: VIEWER_QUERY }];
+
+export default compose(
+  graphql(LOGOUT_MUTATION, {
+    options: { refetchQueries },
+    name: "LOGOUT_MUTATION"
+  })
+)(SimpleMenu);

@@ -155,11 +155,7 @@ class AccountForm extends Component {
   }
 }
 
-const refetchQueries = [
-  {
-    query: VIEWER_QUERY
-  }
-];
+const refetchQueries = [{ query: VIEWER_QUERY }];
 
 export default compose(
   graphql(LOGIN_MUTATION, {
