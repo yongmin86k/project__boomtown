@@ -9,7 +9,7 @@ module.exports = postgres => {
   return {
     async createUser({ fullname, email, password }) {
       const newUserInsert = {
-        text: `INSERT INTO users(fullname, email,  password) VALUES($1, $2, $3) RETURNING *`,
+        text: `INSERT INTO users(fullname, email, password) VALUES($1, $2, $3) RETURNING *`,
         values: [fullname, email, password]
       };
       try {
@@ -42,7 +42,7 @@ module.exports = postgres => {
     async getUserById(id) {
       try {
         const findUserQuery = {
-          text: `SELECT id, email, fullname, bio FROM users WHERE id=$1`,
+          text: `SELECT id, email, fullname, bio, userimageurl FROM users WHERE id=$1`,
           values: [id]
         };
         const user = await postgres.query(findUserQuery);

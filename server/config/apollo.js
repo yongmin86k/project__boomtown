@@ -15,8 +15,6 @@ module.exports = ({ app, pgResource }) => {
 
   const apolloServer = new ApolloServer({
     context: ({ req }) => {
-      console.log("-------------------");
-      console.log(Object.keys(req.cookies));
       const tokenName = app.get("JWT_COOKIE_NAME");
       const token = req ? req.cookies[tokenName] : undefined;
       let user = null;
@@ -35,6 +33,6 @@ module.exports = ({ app, pgResource }) => {
 
   apolloServer.applyMiddleware({
     app,
-    cors: app.get("CORSE_CONFIG")
+    cors: app.get("CORS_CONFIG")
   });
 };

@@ -8,7 +8,7 @@ module.exports = app => {
   const PORT = process.env.PORT || 8080;
 
   app.set("JWT_SECRET", process.env.JWT_SECRET || "keyboardcat");
-  app.set("JWT_COOKIE_NAME", process.env.JWT_COOKIE_NAME || "boomtown");
+  app.set("JWT_COOKIE_NAME", process.env.JWT_COOKIE_NAME || "boomToken");
 
   app.set("PG_HOST", process.env.PG_HOST || "localhost");
   app.set("PG_USER", process.env.PG_USER || "boomtown");

@@ -20,12 +20,14 @@ const ItemFields = gql`
       email
       fullname
       bio
+      userimageurl
     }
     borrower {
       id
       email
       fullname
       bio
+      userimageurl
     }
   }
 `;
@@ -57,6 +59,7 @@ export const ALL_USER_ITEMS_QUERY = gql`
       fullname
       bio
       email
+      userimageurl
       items {
         ...ItemFields
       }
@@ -115,6 +118,7 @@ export const VIEWER_QUERY = gql`
       email
       fullname
       bio
+      userimageurl
     }
   }
 `;
@@ -133,6 +137,7 @@ export const SIGNUP_MUTATION = gql`
         email
         fullname
         bio
+        userimageurl
       }
     }
   }
@@ -147,6 +152,7 @@ export const LOGIN_MUTATION = gql`
         email
         fullname
         bio
+        userimageurl
       }
     }
   }

@@ -23,6 +23,7 @@ module.exports = gql`
     id: ID!
     email: String!
     fullname: String!
+    userimageurl: String
     bio: String
     items: [Item]
     borrowed: [Item]
