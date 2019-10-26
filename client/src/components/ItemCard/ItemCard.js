@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import {
   Avatar,
   Card,
@@ -13,9 +13,7 @@ import {
 import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
 
-import ProfileImg from "../../images/ralph.jpg";
-
-const ItemCard = ({ classes, itemInfo }) => {
+const ItemCard = ({ classes, itemInfo, viewer }) => {
   return (
     <Card>
       <CardActionArea>
@@ -26,8 +24,23 @@ const ItemCard = ({ classes, itemInfo }) => {
         />
       </CardActionArea>
       <CardHeader
-        avatar={<Avatar alt={itemInfo.itemowner.fullname} src={ProfileImg} />}
-        title={itemInfo.itemowner.fullname}
+        avatar={
+          itemInfo.itemowner && itemInfo.itemowner.userimageurl ? (
+            <Avatar
+              alt={itemInfo.itemowner.fullname}
+              src={itemInfo.itemowner.userimageurl}
+            />
+          ) : (
+            <Avatar className={classes.avatar}>
+              {itemInfo.itemowner
+                ? itemInfo.itemowner.fullname.slice(0, 1).toUpperCase()
+                : viewer.fullname.slice(0, 1).toUpperCase()}
+            </Avatar>
+          )
+        }
+        title={
+          itemInfo.itemowner ? itemInfo.itemowner.fullname : viewer.fullname
+        }
         // subheader={itemInfo.created}
         subheader="September 14, 2016"
       />

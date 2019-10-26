@@ -5,16 +5,16 @@ export const ItemPreviewContext = createContext();
 class ItemPreviewProvider extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.defaultValues = {
       item: {
         title: "Initial title",
         description: "Initial description",
         created: new Date(),
         tags: [],
-        imageurl: "https://via.placeholder.com/350",
-        itemowner: {}
+        imageurl: "https://via.placeholder.com/350"
       }
     };
+    this.state = { ...this.defaultValues };
   }
 
   updatePreview = item => {
@@ -22,16 +22,7 @@ class ItemPreviewProvider extends Component {
   };
 
   resetPreview = () => {
-    this.setState({
-      item: {
-        title: "Initial title",
-        description: "Initial description",
-        created: new Date(),
-        tags: [],
-        imageurl: "https://via.placeholder.com/350",
-        itemowner: {}
-      }
-    });
+    this.setState({ ...this.defaultValues });
   };
 
   render() {
