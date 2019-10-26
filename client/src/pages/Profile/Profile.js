@@ -12,8 +12,6 @@ import {
 import { ItemsGrid } from "../../components";
 import styles from "./styles";
 
-import ProfileImg from "../../images/vanellope.jpg";
-
 const Profile = ({ classes, userInfo }) => {
   return (
     <Container
@@ -26,7 +24,15 @@ const Profile = ({ classes, userInfo }) => {
           <Card className={classes.gridProfile}>
             <CardHeader
               className={classes.cardProfileContent}
-              avatar={<Avatar alt={userInfo.fullname} src={ProfileImg} />}
+              avatar={
+                userInfo.userimageurl ? (
+                  <Avatar alt={userInfo.fullname} src={userInfo.userimageurl} />
+                ) : (
+                  <Avatar className={classes.avatar}>
+                    {userInfo.fullname.slice(0).toUpperCase()}
+                  </Avatar>
+                )
+              }
               title={
                 <Typography variant="h4" component="h2" color="textSecondary">
                   {userInfo.fullname}
@@ -36,8 +42,8 @@ const Profile = ({ classes, userInfo }) => {
             <CardContent className={classes.cardProfileContent}>
               <Typography variant="h6" component="p">
                 {userInfo.items ? userInfo.items.length : 0} Items shared{" "}
-                {userInfo.borrowed ? userInfo.borrowed.length : 0}{" "}
-                Items borrowed
+                {userInfo.borrowed ? userInfo.borrowed.length : 0} Items
+                borrowed
               </Typography>
               <Typography component="p">
                 {userInfo.bio ? userInfo.bio : `"No bio provided."`}

@@ -5,6 +5,8 @@ import FullScreenLoader from "../../components/FullScreenLoader";
 import { Query } from "react-apollo";
 import { ALL_ITEMS_QUERY } from "../../apollo/queries";
 
+import { ViewerContext } from "../../context/ViewerProvider";
+
 class ItemsContainer extends Component {
   constructor(props) {
     super(props);
@@ -14,14 +16,20 @@ class ItemsContainer extends Component {
   }
   render() {
     return (
-      <Query query={ALL_ITEMS_QUERY} variables={{ filter: 1 }}>
-        {({ loading, error, data }) => {
-          if (loading) return <FullScreenLoader />;
-          if (error) return `${error}`;
+      <ViewerContext.Consumer>
+        {({ viewer }) => {
+          return (
+            <Query query={ALL_ITEMS_QUERY} variables={{ filter: viewer.id }}>
+              {({ loading, error, data }) => {
+                if (loading) return <FullScreenLoader />;
+                if (error) return `${error}`;
 
-          return <Items items={data.items} />;
+                return <Items items={data.items} />;
+              }}
+            </Query>
+          );
         }}
-      </Query>
+      </ViewerContext.Consumer>
     );
   }
 }
