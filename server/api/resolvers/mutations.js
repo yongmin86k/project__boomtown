@@ -1,6 +1,7 @@
 const { ApolloError } = require("apollo-server-express");
 const { AuthenticationError } = require("apollo-server-express");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 function setCookie({ tokenName, token, res }) {
   res.cookie(tokenName, token, {
@@ -17,7 +18,6 @@ function generateToken(user, secret) {
   });
 }
 
-const jwt = require("jsonwebtoken");
 // const authMutations = require("./auth");
 // -------------------------------
 
@@ -91,14 +91,18 @@ const mutationResolvers = app => ({
   },
 
   async addItem(parent, { input }, { pgResource, token }, info) {
-    const user = await jwt.decode(token, app.get("JWT_SECRET"));
+    try {
+      const user = await jwt.decode(token, app.get("JWT_SECRET"));
 
-    const newItem = await pgResource.saveNewItem({
-      item: input,
-      user
-    });
+      const newItem = await pgResource.saveNewItem({
+        item: input,
+        user
+      });
 
-    return newItem;
+      return newItem;
+    } catch (e) {
+      throw new ApolloError(e);
+    }
   }
 });
 

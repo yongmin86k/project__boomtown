@@ -155,9 +155,20 @@ class AccountForm extends Component {
   }
 }
 
-// @TODO: Refetch the VIEWER_QUERY to reload the app and access authenticated routes.
+const refetchQueries = [
+  {
+    query: VIEWER_QUERY
+  }
+];
+
 export default compose(
-  graphql(LOGIN_MUTATION, { name: "LOGIN_MUTATION" }),
-  graphql(SIGNUP_MUTATION, { name: "SIGNUP_MUTATION" }),
+  graphql(LOGIN_MUTATION, {
+    options: { refetchQueries },
+    name: "LOGIN_MUTATION"
+  }),
+  graphql(SIGNUP_MUTATION, {
+    options: { refetchQueries },
+    name: "SIGNUP_MUTATION"
+  }),
   withStyles(styles)
 )(AccountForm);
