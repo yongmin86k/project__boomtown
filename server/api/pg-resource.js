@@ -1,6 +1,6 @@
 function tagsQueryString(tags, result) {
   for (i = 0; i < tags.length; i++) {
-    result += `((select id from new_item), $${i + 5}),`;
+    result += `((select id from new_item), $${i + 6}),`;
   }
   return result.slice(0, -1);
 }
@@ -159,16 +159,19 @@ module.exports = postgres => {
         const ArrayTagId = tags.map(tag => {
           return tag.id;
         });
+        const dateNow = new Date();
         const newItemQuery = {
           text: `WITH new_item AS ( 
-                  INSERT INTO items(title, description, itemowner, imageurl) 
-                  VALUES ($1, $2, $3, $4) 
+                  INSERT INTO items(title, description, itemowner, imageurl, created) 
+                  VALUES ($1, $2, $3, $4, $5) 
                   RETURNING *
                   ), new_relation AS ( 
                   INSERT INTO itemtags(itemid, tagid) 
                     VALUES ${tagRelationQuery}
                   ) SELECT * FROM new_item`,
-          values: [title, description, user, imageurl].concat(ArrayTagId)
+          values: [title, description, user.id, imageurl, dateNow].concat(
+            ArrayTagId
+          )
         };
         const new_item = await postgres.query(newItemQuery);
         return new_item.rows[0];

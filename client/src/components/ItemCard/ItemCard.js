@@ -13,6 +13,10 @@ import {
 import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
 import { MD5 } from "../../scripts";
+import * as moment from "moment";
+let nowMoment = (dateNow = new Date()) => {
+  return moment(dateNow).fromNow();
+};
 
 const ItemCard = ({ classes, itemInfo, viewer }) => {
   return (
@@ -33,9 +37,9 @@ const ItemCard = ({ classes, itemInfo, viewer }) => {
             />
           ) : (
             <Avatar
-              alt={viewer.fullname}
+              alt={itemInfo.itemowner.fullname}
               src={`https://www.gravatar.com/avatar/${MD5(
-                viewer.email
+                itemInfo.itemowner.email
               )}?d=retro`}
             />
           )
@@ -43,9 +47,9 @@ const ItemCard = ({ classes, itemInfo, viewer }) => {
         title={
           itemInfo.itemowner ? itemInfo.itemowner.fullname : viewer.fullname
         }
-        // subheader={itemInfo.created}
-        subheader="September 14, 2016"
+        subheader={nowMoment(itemInfo.created)}
       />
+
       <CardContent>
         <Typography
           aria-label={itemInfo.title}

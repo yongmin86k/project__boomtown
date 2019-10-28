@@ -20,8 +20,6 @@ import validate from "./helpers/validation";
 
 import styles from "./styles";
 
-const validEmail = /([\w\.\-_]+)?\w+@[\w-_]+(\.\w+){1,}/g;
-
 class AccountForm extends Component {
   constructor(props) {
     super(props);
@@ -38,14 +36,8 @@ class AccountForm extends Component {
     return (
       <Form
         onSubmit={async values => {
-          this.setState({ error: null });
-
-          if (!validEmail.test(values.email)) {
-            this.setState({
-              error: { email: "Please type a proper email address" }
-            });
-          }
           if (this.state.error) {
+          } else {
             try {
               BoolFormToggle
                 ? await LOGIN_MUTATION({ variables: { user: values } })
@@ -56,6 +48,18 @@ class AccountForm extends Component {
           }
         }}
         validate={values => {
+          if (values.email) {
+            const validEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
+            if (!validEmail.test(values.email)) {
+              this.setState({
+                error: { email: "Please type a proper email address" }
+              });
+            } else {
+              this.setState({
+                error: null
+              });
+            }
+          }
           return validate(values, BoolFormToggle);
         }}
         render={({ handleSubmit, form, valid, submitSucceeded }) => {
@@ -76,11 +80,11 @@ class AccountForm extends Component {
                     render={({ input, meta }) => (
                       <Input
                         id="fullname"
-                        type="text"
                         inputProps={{
                           autoComplete: "off"
                         }}
                         {...input}
+                        type="text"
                         value={input.value}
                       />
                     )}
@@ -94,11 +98,11 @@ class AccountForm extends Component {
                   render={({ input, meta }) => (
                     <Input
                       id="email"
-                      type="text"
                       inputProps={{
                         autoComplete: "off"
                       }}
                       {...input}
+                      type="text"
                       value={input.value}
                     />
                   )}

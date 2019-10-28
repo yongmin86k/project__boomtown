@@ -18,9 +18,6 @@ function generateToken(user, secret) {
   });
 }
 
-// const authMutations = require("./auth");
-// -------------------------------
-
 const mutationResolvers = app => ({
   async signup(
     parent,
