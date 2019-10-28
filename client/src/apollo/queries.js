@@ -108,6 +108,16 @@ export const ADD_ITEM_MUTATION = gql`
   }
 `;
 
+// MUTATION :: borrow an item
+export const BORROW_ITEM_MUTATION = gql`
+  mutation borrowItem($input: AssignedBorrower!) {
+    borrowItem(input: $input) {
+      ...ItemFields
+    }
+  }
+  ${ItemFields}
+`;
+
 // /**
 //  * Auth-related queries and mutations.
 //  */

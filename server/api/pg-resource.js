@@ -178,6 +178,52 @@ module.exports = postgres => {
       } catch (e) {
         throw e;
       }
-    } // end async saveNewItem()
+    }, // end async saveNewItem()
+
+    async borrowNewItem({ item, user }) {
+      return new Promise((resolve, reject) => {
+        postgres.connect((err, client, done) => {
+          try {
+            client.query("BEGIN", async err => {
+              const itemID = item.id;
+              const userID = user.id;
+
+              const updateItemQuery = {
+                text: `UPDATE items SET borrower = $1 WHERE id = $2`,
+                values: [userID, itemID]
+              };
+
+              await postgres.query(updateItemQuery);
+
+              const itemQuery = {
+                text: `SELECT * FROM items WHERE id = $1`,
+                values: [itemID]
+              };
+
+              const updateItem = await postgres.query(itemQuery);
+
+              client.query("COMMIT", err => {
+                if (err) {
+                  throw err;
+                }
+                done();
+                resolve(updateItem.rows[0]);
+              });
+            });
+          } catch (e) {
+            client.query("ROLLBACK", err => {
+              if (err) {
+                throw err;
+              }
+              done();
+            });
+            switch (true) {
+              default:
+                throw e;
+            }
+          }
+        });
+      }); // end new Promise()
+    }
   };
 };

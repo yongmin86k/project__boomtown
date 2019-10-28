@@ -79,5 +79,6 @@ module.exports = gql`
     login(user: LoginInput): AuthPayload!
     logout: Boolean!
     addItem(input: NewItemInput!): Item
+    borrowItem(input: AssignedBorrower!): Item
   }
 `;

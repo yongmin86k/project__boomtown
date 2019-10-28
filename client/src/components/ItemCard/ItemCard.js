@@ -1,4 +1,11 @@
 import React from "react";
+import { graphql, compose } from "react-apollo";
+import {
+  ALL_ITEMS_QUERY,
+  BORROW_ITEM_MUTATION,
+  VIEWER_QUERY
+} from "../../apollo/queries";
+
 import {
   Avatar,
   Card,
@@ -18,7 +25,9 @@ let nowMoment = (dateNow = new Date()) => {
   return moment(dateNow).fromNow();
 };
 
-const ItemCard = ({ classes, itemInfo, viewer }) => {
+const ItemCard = ({ classes, itemInfo, viewer, BORROW_ITEM_MUTATION }) => {
+  const BoolBorrowed = Boolean(itemInfo.borrower);
+
   return (
     <Card>
       <CardActionArea>
@@ -35,11 +44,18 @@ const ItemCard = ({ classes, itemInfo, viewer }) => {
               alt={itemInfo.itemowner.fullname}
               src={itemInfo.itemowner.userimageurl}
             />
-          ) : (
+          ) : itemInfo.itemowner ? (
             <Avatar
               alt={itemInfo.itemowner.fullname}
               src={`https://www.gravatar.com/avatar/${MD5(
                 itemInfo.itemowner.email
+              )}?d=retro`}
+            />
+          ) : (
+            <Avatar
+              alt={viewer.fullname}
+              src={`https://www.gravatar.com/avatar/${MD5(
+                viewer.email
               )}?d=retro`}
             />
           )
@@ -81,10 +97,40 @@ const ItemCard = ({ classes, itemInfo, viewer }) => {
         </Typography>
       </CardContent>
       <CardActions className={classes.cardMediaItemsBtn}>
-        <Button variant="outlined">Borrow</Button>
+        <Button
+          onClick={() => {
+            BORROW_ITEM_MUTATION({
+              variables: {
+                input: {
+                  id: itemInfo.id
+                }
+              }
+            });
+          }}
+          disabled={BoolBorrowed}
+          variant="outlined"
+        >
+          {BoolBorrowed ? "Not available" : "Borrow"}
+        </Button>
       </CardActions>
     </Card>
   );
 };
 
-export default withStyles(styles)(ItemCard);
+const refetchQueries = ({ data }) => {
+  return [
+    { query: VIEWER_QUERY },
+    {
+      query: ALL_ITEMS_QUERY,
+      variables: { filter: data.borrowItem.borrower.id }
+    }
+  ];
+};
+
+export default compose(
+  graphql(BORROW_ITEM_MUTATION, {
+    options: { refetchQueries },
+    name: "BORROW_ITEM_MUTATION"
+  }),
+  withStyles(styles)
+)(ItemCard);

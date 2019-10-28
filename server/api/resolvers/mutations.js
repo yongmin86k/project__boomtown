@@ -100,6 +100,21 @@ const mutationResolvers = app => ({
     } catch (e) {
       throw new ApolloError(e);
     }
+  },
+
+  async borrowItem(parent, { input }, { pgResource, token }, info) {
+    try {
+      const user = await jwt.decode(token, app.get("JWT_SECRET"));
+
+      const updateItem = await pgResource.borrowNewItem({
+        item: input,
+        user
+      });
+
+      return updateItem;
+    } catch (e) {
+      throw new ApolloError(e);
+    }
   }
 });
 
