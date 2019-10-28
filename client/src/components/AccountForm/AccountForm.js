@@ -1,11 +1,14 @@
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
-import Grid from "@material-ui/core/Grid";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import React, { Component, Fragment } from "react";
-import Typography from "@material-ui/core/Typography";
+import {
+  Button,
+  FormControl,
+  Grid,
+  Input,
+  InputLabel,
+  Typography,
+  TextField
+} from "@material-ui/core";
+import React, { Component } from "react";
 import { Form, Field } from "react-final-form";
 import {
   LOGIN_MUTATION,
@@ -17,7 +20,7 @@ import validate from "./helpers/validation";
 
 import styles from "./styles";
 
-const validEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
+const validEmail = /([\w\.\-_]+)?\w+@[\w-_]+(\.\w+){1,}/g;
 
 class AccountForm extends Component {
   constructor(props) {
@@ -41,7 +44,8 @@ class AccountForm extends Component {
             this.setState({
               error: { email: "Please type a proper email address" }
             });
-          } else {
+          }
+          if (this.state.error) {
             try {
               BoolFormToggle
                 ? await LOGIN_MUTATION({ variables: { user: values } })
@@ -101,17 +105,15 @@ class AccountForm extends Component {
                 />
               </FormControl>
               <FormControl fullWidth className={classes.formControl}>
-                <InputLabel htmlFor="password">Password</InputLabel>
                 <Field
                   name="password"
                   render={({ input, meta }) => (
-                    <Input
+                    <TextField
                       id="password"
-                      type="password"
-                      inputProps={{
-                        autoComplete: "off"
-                      }}
+                      label="Password"
+                      autoComplete="off"
                       {...input}
+                      type="password"
                       value={input.value}
                     />
                   )}
