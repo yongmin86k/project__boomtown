@@ -75,5 +75,6 @@ module.exports = gql`
     logout: Boolean!
     addItem(input: NewItemInput!): Item
     borrowItem(input: AssignedBorrower!): Item
+    returnItem(input: AssignedBorrower!): Item
   }
 `;

@@ -115,6 +115,18 @@ const mutationResolvers = app => ({
     } catch (e) {
       throw new ApolloError(e);
     }
+  },
+
+  async returnItem(parent, { input }, { pgResource }, info) {
+    try {
+      const updateItem = await pgResource.returnTheItem({
+        item: input
+      });
+
+      return updateItem;
+    } catch (e) {
+      throw new ApolloError(e);
+    }
   }
 });
 
