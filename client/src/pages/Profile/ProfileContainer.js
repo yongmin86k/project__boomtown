@@ -12,7 +12,11 @@ class ProfileContainer extends Component {
       <ViewerContext.Consumer>
         {({ viewer }) => {
           return (
-            <Query query={ALL_USER_ITEMS_QUERY} variables={{ id: viewer.id }}>
+            <Query
+              query={ALL_USER_ITEMS_QUERY}
+              fetchPolicy="cache-and-network"
+              variables={{ id: viewer.id }}
+            >
               {({ loading, error, data }) => {
                 if (loading) return <FullScreenLoader />;
                 if (error) return `Error: ${error}`;

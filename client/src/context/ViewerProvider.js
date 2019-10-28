@@ -3,7 +3,7 @@ import React from "react";
 import { VIEWER_QUERY } from "../apollo/queries";
 import { FullScreenLoader } from "../components";
 
-const ViewerContext = React.createContext();
+export const ViewerContext = React.createContext();
 
 const ViewerProvider = ({ children }) => {
   return (
@@ -23,5 +23,4 @@ const ViewerProvider = ({ children }) => {
   );
 };
 
-export { ViewerContext };
 export default ViewerProvider;
