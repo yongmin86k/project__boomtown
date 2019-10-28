@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
+import { MD5 } from "../../scripts";
 
 const ItemCard = ({ classes, itemInfo, viewer }) => {
   return (
@@ -31,11 +32,12 @@ const ItemCard = ({ classes, itemInfo, viewer }) => {
               src={itemInfo.itemowner.userimageurl}
             />
           ) : (
-            <Avatar className={classes.avatar}>
-              {itemInfo.itemowner
-                ? itemInfo.itemowner.fullname.slice(0, 1).toUpperCase()
-                : viewer.fullname.slice(0, 1).toUpperCase()}
-            </Avatar>
+            <Avatar
+              alt={viewer.fullname}
+              src={`https://www.gravatar.com/avatar/${MD5(
+                viewer.email
+              )}?d=retro`}
+            />
           )
         }
         title={

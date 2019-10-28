@@ -25,9 +25,6 @@ const styles = theme => ({
       padding: 0
     }
   },
-  avatar: {
-    backgroundColor: theme.palette.primary.main
-  },
   gridProfileHeader: {
     marginTop: theme.spacing(6)
   }

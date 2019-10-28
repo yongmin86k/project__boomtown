@@ -11,7 +11,8 @@ import {
 } from "@material-ui/core";
 import { ItemsGrid } from "../../components";
 import styles from "./styles";
-// Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico"
+import { MD5 } from "../../scripts";
+
 const Profile = ({ classes, userInfo }) => {
   return (
     <Container
@@ -28,9 +29,12 @@ const Profile = ({ classes, userInfo }) => {
                 userInfo.userimageurl ? (
                   <Avatar alt={userInfo.fullname} src={userInfo.userimageurl} />
                 ) : (
-                  <Avatar className={classes.avatar}>
-                    {userInfo.fullname.slice(0, 1).toUpperCase()}
-                  </Avatar>
+                  <Avatar
+                    alt={userInfo.fullname}
+                    src={`https://www.gravatar.com/avatar/${MD5(
+                      userInfo.email
+                    )}?d=retro`}
+                  />
                 )
               }
               title={
