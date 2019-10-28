@@ -4,7 +4,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import Typography from "@material-ui/core/Typography";
 import { Form, Field } from "react-final-form";
 import {
@@ -16,6 +16,8 @@ import { graphql, compose } from "react-apollo";
 import validate from "./helpers/validation";
 
 import styles from "./styles";
+
+const validEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
 
 class AccountForm extends Component {
   constructor(props) {
@@ -34,18 +36,25 @@ class AccountForm extends Component {
       <Form
         onSubmit={async values => {
           this.setState({ error: null });
-          try {
-            BoolFormToggle
-              ? await LOGIN_MUTATION({ variables: { user: values } })
-              : await SIGNUP_MUTATION({ variables: { user: values } });
-          } catch (e) {
-            this.setState({ error: e });
+
+          if (!validEmail.test(values.email)) {
+            this.setState({
+              error: { email: "Please type a proper email address" }
+            });
+          } else {
+            try {
+              BoolFormToggle
+                ? await LOGIN_MUTATION({ variables: { user: values } })
+                : await SIGNUP_MUTATION({ variables: { user: values } });
+            } catch (e) {
+              this.setState({ error: { database: { ...e } } });
+            }
           }
         }}
         validate={values => {
           return validate(values, BoolFormToggle);
         }}
-        render={({ handleSubmit, form, valid, submitting }) => {
+        render={({ handleSubmit, form, valid, submitSucceeded }) => {
           return (
             <form
               onSubmit={e => {
@@ -143,8 +152,12 @@ class AccountForm extends Component {
                 </Grid>
               </FormControl>
               <Typography className={classes.errorMessage}>
-                {this.state.error
-                  ? this.state.error.message.split(": ")[1]
+                {submitSucceeded && this.state.error
+                  ? this.state.error.email
+                    ? this.state.error.email
+                    : this.state.error.database
+                    ? this.state.error.database.message.split(": ")[1]
+                    : ""
                   : ""}
               </Typography>
             </form>

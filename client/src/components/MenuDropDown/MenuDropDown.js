@@ -14,7 +14,6 @@ import {
   PowerSettingsNew as PowerSettingsNewIcon
 } from "@material-ui/icons";
 
-// import { graphql } from "react-apollo";
 import { graphql, compose } from "react-apollo";
 import { LOGOUT_MUTATION, VIEWER_QUERY } from "../../apollo/queries";
 
@@ -27,10 +26,6 @@ const SimpleMenu = ({ LOGOUT_MUTATION }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const logout = () => {
-    console.log(1);
   };
 
   return (
