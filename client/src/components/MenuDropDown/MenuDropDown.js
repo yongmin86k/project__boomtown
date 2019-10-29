@@ -46,7 +46,12 @@ const SimpleMenu = ({ LOGOUT_MUTATION }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem component={NavLink} to={"/profile"} onClick={handleClose}>
+        <MenuItem
+          component={NavLink}
+          to={"/profile"}
+          exact
+          onClick={handleClose}
+        >
           <ListItemIcon>
             <FingerprintIcon fontSize="default" />
           </ListItemIcon>

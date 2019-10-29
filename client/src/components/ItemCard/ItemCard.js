@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { Link } from "react-router-dom";
 import { Form } from "react-final-form";
 
 import { graphql, compose } from "react-apollo";
@@ -78,42 +78,91 @@ class ItemCard extends Component {
           >
             <Card>
               <CardActionArea>
-                <CardMedia
-                  className={classes.cardMediaItemsImg}
-                  image={itemInfo.imageurl}
-                  title={itemInfo.title}
-                />
+                {itemInfo.itemowner ? (
+                  <CardMedia
+                    className={classes.cardMediaItemsImg}
+                    image={itemInfo.imageurl}
+                    title={itemInfo.title}
+                    component={Link}
+                    to={`/profile/${itemInfo.itemowner.id}`}
+                  />
+                ) : (
+                  <CardMedia
+                    className={classes.cardMediaItemsImg}
+                    image={itemInfo.imageurl}
+                    title={itemInfo.title}
+                  />
+                )}
               </CardActionArea>
-              <CardHeader
-                avatar={
-                  itemInfo.itemowner && itemInfo.itemowner.userimageurl ? (
-                    <Avatar
-                      alt={itemInfo.itemowner.fullname}
-                      src={itemInfo.itemowner.userimageurl}
-                    />
-                  ) : itemInfo.itemowner ? (
-                    <Avatar
-                      alt={itemInfo.itemowner.fullname}
-                      src={`https://www.gravatar.com/avatar/${MD5(
-                        itemInfo.itemowner.email
-                      )}?d=retro`}
-                    />
-                  ) : (
-                    <Avatar
-                      alt={viewer.fullname}
-                      src={`https://www.gravatar.com/avatar/${MD5(
-                        viewer.email
-                      )}?d=retro`}
-                    />
-                  )
-                }
-                title={
-                  itemInfo.itemowner
-                    ? itemInfo.itemowner.fullname
-                    : viewer.fullname
-                }
-                subheader={nowMoment(itemInfo.created)}
-              />
+              {itemInfo.itemowner ? (
+                <CardActionArea>
+                  <CardHeader
+                    component={Link}
+                    to={`/profile/${itemInfo.itemowner.id}`}
+                    avatar={
+                      itemInfo.itemowner && itemInfo.itemowner.userimageurl ? (
+                        <Avatar
+                          alt={itemInfo.itemowner.fullname}
+                          src={itemInfo.itemowner.userimageurl}
+                        />
+                      ) : itemInfo.itemowner ? (
+                        <Avatar
+                          alt={itemInfo.itemowner.fullname}
+                          src={`https://www.gravatar.com/avatar/${MD5(
+                            itemInfo.itemowner.email
+                          )}?d=retro`}
+                        />
+                      ) : (
+                        <Avatar
+                          alt={viewer.fullname}
+                          src={`https://www.gravatar.com/avatar/${MD5(
+                            viewer.email
+                          )}?d=retro`}
+                        />
+                      )
+                    }
+                    title={
+                      itemInfo.itemowner
+                        ? itemInfo.itemowner.fullname
+                        : viewer.fullname
+                    }
+                    subheader={nowMoment(itemInfo.created)}
+                  />
+                </CardActionArea>
+              ) : (
+                <CardActionArea>
+                  <CardHeader
+                    avatar={
+                      itemInfo.itemowner && itemInfo.itemowner.userimageurl ? (
+                        <Avatar
+                          alt={itemInfo.itemowner.fullname}
+                          src={itemInfo.itemowner.userimageurl}
+                        />
+                      ) : itemInfo.itemowner ? (
+                        <Avatar
+                          alt={itemInfo.itemowner.fullname}
+                          src={`https://www.gravatar.com/avatar/${MD5(
+                            itemInfo.itemowner.email
+                          )}?d=retro`}
+                        />
+                      ) : (
+                        <Avatar
+                          alt={viewer.fullname}
+                          src={`https://www.gravatar.com/avatar/${MD5(
+                            viewer.email
+                          )}?d=retro`}
+                        />
+                      )
+                    }
+                    title={
+                      itemInfo.itemowner
+                        ? itemInfo.itemowner.fullname
+                        : viewer.fullname
+                    }
+                    subheader={nowMoment(itemInfo.created)}
+                  />
+                </CardActionArea>
+              )}
 
               <CardContent>
                 <Typography
