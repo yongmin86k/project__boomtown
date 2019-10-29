@@ -26,6 +26,8 @@ import { ItemPreviewContext } from "../../context/ItemPreviewProvider";
 import { Mutation } from "react-apollo";
 import { ADD_ITEM_MUTATION } from "../../apollo/queries";
 
+import PropTypes from "prop-types";
+
 class ShareForm extends Component {
   constructor(props) {
     super(props);
@@ -58,7 +60,6 @@ class ShareForm extends Component {
     updatePreview({
       ...values,
       tags: this.applyTags(values.tags || [], tagInfo)
-      // 'null' can't use the .map() method
     });
   };
 
@@ -157,7 +158,6 @@ class ShareForm extends Component {
                                 />
                               )}
                             />
-                            {/* // */}
                             <Field
                               name="description"
                               render={({ input, meta }) => (
@@ -175,7 +175,6 @@ class ShareForm extends Component {
                                 />
                               )}
                             />
-                            {/* // */}
                             <div className={classes.ShareItemFormContents}>
                               <Typography
                                 gutterBottom
@@ -244,7 +243,6 @@ class ShareForm extends Component {
                                 </FormGroup>
                               </FormControl>
                             </div>
-                            {/* // */}
                             <Button
                               variant="contained"
                               size="large"
@@ -271,5 +269,11 @@ class ShareForm extends Component {
     );
   }
 }
+
+ShareForm.propTypes = {
+  tagInfo: PropTypes.array.isRequired,
+
+  tagInfo: PropTypes.arrayOf(PropTypes.object).isRequired
+};
 
 export default withStyles(styles)(ShareForm);
